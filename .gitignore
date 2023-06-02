@@ -131,4 +131,4 @@ dist
 
 # project files
 db.json
-*/tmp/app.db
+*/db/app.db
