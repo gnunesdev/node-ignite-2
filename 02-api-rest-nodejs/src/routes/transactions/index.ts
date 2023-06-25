@@ -70,9 +70,18 @@ export async function transactionRoutes(app: FastifyInstance) {
       type: z.enum(['credit', 'debit']),
     });
 
-    const { title, amount, type } = createTransactionBodySchema.parse(
-      request.body,
-    );
+    let data;
+
+    try {
+      data = createTransactionBodySchema.parse(request.body);
+    } catch (error) {
+      console.error(error);
+      return reply
+        .status(400)
+        .send({ error: 'there was an error parsing the data sent' });
+    }
+
+    const { title, amount, type } = data;
 
     let sessionId = request.cookies.sessionId;
 
