@@ -1,19 +1,15 @@
 import Fastify from 'fastify';
 import { env } from './services/environment';
-import { knex } from './services/database';
+import { userRoutes } from './routes/user';
 
 const server = Fastify({
   logger: true,
 });
 
-server.get('/', async (request, reply) => {
-  const tables = await knex('sqlite_schema').select('*');
-  return tables;
+server.register(userRoutes, {
+  prefix: 'users',
 });
 
-server.listen({ port: env.PORT }, function (err, address) {
+server.listen({ port: env.PORT }, () => {
   console.log('HTTP Server started 🚀');
-  if (err) {
-    server.log.error(err);
-  }
 });
